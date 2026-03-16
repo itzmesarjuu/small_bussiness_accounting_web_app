@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LedgerLite - Modern small business accounting web application for invoices, expenses, clients, and financial reports.">
+    <title>LedgerLite | Small Business Accounting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <span class="logo-text">LedgerLite</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+                <i class="fas fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-page="invoices" id="nav-invoices">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Invoices</span>
+            </a>
+            <a href="#" class="nav-item" data-page="expenses" id="nav-expenses">
+                <i class="fas fa-receipt"></i>
+                <span>Expenses</span>
+            </a>
+            <a href="#" class="nav-item" data-page="clients" id="nav-clients">
+                <i class="fas fa-users"></i>
+                <span>Clients</span>
+            </a>
+            <a href="#" class="nav-item" data-page="reports" id="nav-reports">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+            <a href="#" class="nav-item" data-page="settings" id="nav-settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <span class="user-name">John Doe</span>
+                <span class="user-role">Administrator</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-box" id="searchBox">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search invoices, clients, expenses..." id="globalSearch">
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <button class="top-bar-btn" id="notificationBtn" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="top-bar-btn" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- ===================== DASHBOARD PAGE ===================== -->
+        <section class="page active" id="page-dashboard">
+            <div class="page-header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p class="page-subtitle">Welcome back, John. Here's your financial overview.</p>
+                </div>
+                <div class="page-actions">
+                    <select class="period-select" id="dashboardPeriod">
+                        <option value="week">This Week</option>
+                        <option value="month" selected>This Month</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card kpi-revenue">
+                    <div class="kpi-icon"><i class="fas fa-arrow-trend-up"></i></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Total Revenue</span>
+                        <span class="kpi-value" id="kpiRevenue">$0</span>
+                        <span class="kpi-change positive"><i class="fas fa-caret-up"></i> 12.5%</span>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-expenses">
+                    <div class="kpi-icon"><i class="fas fa-arrow-trend-down"></i></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Total Expenses</span>
+                        <span class="kpi-value" id="kpiExpenses">$0</span>
+                        <span class="kpi-change negative"><i class="fas fa-caret-down"></i> 3.2%</span>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-profit">
+                    <div class="kpi-icon"><i class="fas fa-sack-dollar"></i></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Net Profit</span>
+                        <span class="kpi-value" id="kpiProfit">$0</span>
+                        <span class="kpi-change positive"><i class="fas fa-caret-up"></i> 18.7%</span>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-outstanding">
+                    <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Outstanding</span>
+                        <span class="kpi-value" id="kpiOutstanding">$0</span>
+                        <span class="kpi-change neutral"><i class="fas fa-minus"></i> 5 invoices</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="charts-grid">
+                <div class="chart-card revenue-chart-card">
+                    <div class="chart-header">
+                        <h3>Revenue vs Expenses</h3>
+                        <div class="chart-legend">
+                            <span class="legend-item"><span class="legend-dot revenue-dot"></span> Revenue</span>
+                            <span class="legend-item"><span class="legend-dot expense-dot"></span> Expenses</span>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card expense-breakdown-card">
+                    <div class="chart-header">
+                        <h3>Expense Breakdown</h3>
+                    </div>
+                    <div class="chart-body doughnut-container">
+                        <canvas id="expenseDonut"></canvas>
+                        <div class="donut-center" id="donutCenter">
+                            <span class="donut-total">$8,420</span>
+                            <span class="donut-label">Total</span>
+                        </div>
+                    </div>
+                    <div class="expense-legend" id="expenseLegend"></div>
+                </div>
+            </div>
+
+            <!-- Recent Activity & Invoices -->
+            <div class="bottom-grid">
+                <div class="card recent-invoices-card">
+                    <div class="card-header">
+                        <h3>Recent Invoices</h3>
+                        <a href="#" class="view-all-link" data-page="invoices">View All <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="recentInvoicesTable">
+                            <thead>
+                                <tr>
+                                    <th>Invoice</th>
+                                    <th>Client</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentInvoicesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card activity-card">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="activity-feed" id="activityFeed"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== INVOICES PAGE ===================== -->
+        <section class="page" id="page-invoices">
+            <div class="page-header">
+                <div>
+                    <h1>Invoices</h1>
+                    <p class="page-subtitle">Manage and track all your invoices.</p>
+                </div>
+                <div class="page-actions">
+                    <button class="btn btn-primary" id="createInvoiceBtn">
+                        <i class="fas fa-plus"></i> New Invoice
+                    </button>
+                </div>
+            </div>
+
+            <!-- Invoice Stats -->
+            <div class="mini-stats-grid">
+                <div class="mini-stat">
+                    <span class="mini-stat-value" id="invoiceTotalCount">0</span>
+                    <span class="mini-stat-label">Total Invoices</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-value paid-color" id="invoicePaidCount">0</span>
+                    <span class="mini-stat-label">Paid</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-value pending-color" id="invoicePendingCount">0</span>
+                    <span class="mini-stat-label">Pending</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-value overdue-color" id="invoiceOverdueCount">0</span>
+                    <span class="mini-stat-label">Overdue</span>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <select class="filter-select" id="invoiceStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="paid">Paid</option>
+                        <option value="pending">Pending</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="draft">Draft</option>
+                    </select>
+                    <input type="text" class="filter-input" placeholder="Search invoices..." id="invoiceSearch">
+                </div>
+                <div class="filter-group">
+                    <button class="btn btn-outline btn-sm" id="exportInvoicesBtn"><i class="fas fa-download"></i> Export</button>
+                </div>
+            </div>
+
+            <!-- Invoices Table -->
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table" id="invoicesTable">
+                        <thead>
+                            <tr>
+                                <th>Invoice #</th>
+                                <th>Client</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoicesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== EXPENSES PAGE ===================== -->
+        <section class="page" id="page-expenses">
+            <div class="page-header">
+                <div>
+                    <h1>Expenses</h1>
+                    <p class="page-subtitle">Track and categorize your business expenses.</p>
+                </div>
+                <div class="page-actions">
+                    <button class="btn btn-primary" id="addExpenseBtn">
+                        <i class="fas fa-plus"></i> Add Expense
+                    </button>
+                </div>
+            </div>
+
+            <!-- Expense Summary -->
+            <div class="mini-stats-grid">
+                <div class="mini-stat">
+                    <span class="mini-stat-value" id="expenseTotal">$0</span>
+                    <span class="mini-stat-label">Total This Month</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-value" id="expenseAvg">$0</span>
+                    <span class="mini-stat-label">Daily Average</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-value" id="expenseHighest">$0</span>
+                    <span class="mini-stat-label">Highest Category</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-value" id="expenseCount">0</span>
+                    <span class="mini-stat-label">Transactions</span>
+                </div>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <select class="filter-select" id="expenseCategoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="office">Office Supplies</option>
+                        <option value="travel">Travel</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="software">Software</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="payroll">Payroll</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" class="filter-input" placeholder="Search expenses..." id="expenseSearch">
+                </div>
+            </div>
+
+            <!-- Expenses Table -->
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table" id="expensesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Payment Method</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expensesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== CLIENTS PAGE ===================== -->
+        <section class="page" id="page-clients">
+            <div class="page-header">
+                <div>
+                    <h1>Clients</h1>
+                    <p class="page-subtitle">Manage your client relationships and information.</p>
+                </div>
+                <div class="page-actions">
+                    <button class="btn btn-primary" id="addClientBtn">
+                        <i class="fas fa-plus"></i> Add Client
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <input type="text" class="filter-input" placeholder="Search clients..." id="clientSearch">
+                </div>
+            </div>
+
+            <div class="clients-grid" id="clientsGrid"></div>
+        </section>
+
+        <!-- ===================== REPORTS PAGE ===================== -->
+        <section class="page" id="page-reports">
+            <div class="page-header">
+                <div>
+                    <h1>Reports</h1>
+                    <p class="page-subtitle">Financial insights and analytics for your business.</p>
+                </div>
+                <div class="page-actions">
+                    <select class="period-select" id="reportPeriod">
+                        <option value="month">This Month</option>
+                        <option value="quarter" selected>This Quarter</option>
+                        <option value="year">This Year</option>
+                    </select>
+                    <button class="btn btn-outline" id="downloadReportBtn"><i class="fas fa-download"></i> Download PDF</button>
+                </div>
+            </div>
+
+            <!-- Profit & Loss Summary -->
+            <div class="card report-summary-card">
+                <h3>Profit & Loss Summary</h3>
+                <div class="pnl-grid">
+                    <div class="pnl-item">
+                        <span class="pnl-label">Gross Revenue</span>
+                        <span class="pnl-value" id="pnlRevenue">$0</span>
+                    </div>
+                    <div class="pnl-divider"></div>
+                    <div class="pnl-item">
+                        <span class="pnl-label">Total Expenses</span>
+                        <span class="pnl-value negative" id="pnlExpenses">-$0</span>
+                    </div>
+                    <div class="pnl-divider"></div>
+                    <div class="pnl-item pnl-highlight">
+                        <span class="pnl-label">Net Profit</span>
+                        <span class="pnl-value" id="pnlProfit">$0</span>
+                    </div>
+                    <div class="pnl-divider"></div>
+                    <div class="pnl-item">
+                        <span class="pnl-label">Profit Margin</span>
+                        <span class="pnl-value" id="pnlMargin">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Monthly Revenue Trend</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="monthlyRevenueChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Cash Flow</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="cashFlowChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Clients -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Top Clients by Revenue</h3>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="topClientsTable">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Total Revenue</th>
+                                <th>Invoices</th>
+                                <th>Avg. Invoice</th>
+                                <th>Share</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topClientsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== SETTINGS PAGE ===================== -->
+        <section class="page" id="page-settings">
+            <div class="page-header">
+                <div>
+                    <h1>Settings</h1>
+                    <p class="page-subtitle">Configure your LedgerLite preferences.</p>
+                </div>
+            </div>
+            <div class="settings-grid">
+                <div class="card settings-card">
+                    <h3><i class="fas fa-building"></i> Business Information</h3>
+                    <form class="settings-form" id="businessForm">
+                        <div class="form-group">
+                            <label for="businessName">Business Name</label>
+                            <input type="text" id="businessName" value="Acme Corp" placeholder="Enter business name">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessEmail">Email</label>
+                            <input type="email" id="businessEmail" value="hello@acmecorp.com" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessPhone">Phone</label>
+                            <input type="tel" id="businessPhone" value="+1 (555) 123-4567" placeholder="Enter phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessAddress">Address</label>
+                            <textarea id="businessAddress" rows="3" placeholder="Enter address">123 Business Ave, Suite 100&#10;New York, NY 10001</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+                <div class="card settings-card">
+                    <h3><i class="fas fa-palette"></i> Appearance</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <div class="theme-options">
+                                <button class="theme-option active" data-theme="dark" id="themeDark">
+                                    <i class="fas fa-moon"></i> Dark
+                                </button>
+                                <button class="theme-option" data-theme="light" id="themeLight">
+                                    <i class="fas fa-sun"></i> Light
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Accent Color</label>
+                            <div class="color-options" id="accentColorOptions">
+                                <button class="color-option active" data-color="#6C5CE7" style="background:#6C5CE7"></button>
+                                <button class="color-option" data-color="#00B894" style="background:#00B894"></button>
+                                <button class="color-option" data-color="#E17055" style="background:#E17055"></button>
+                                <button class="color-option" data-color="#0984E3" style="background:#0984E3"></button>
+                                <button class="color-option" data-color="#FDCB6E" style="background:#FDCB6E"></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="currencySelect">Currency</label>
+                            <select id="currencySelect" class="filter-select">
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                                <option value="INR" selected>INR (₹)</option>
+                                <option value="JPY">JPY (¥)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card settings-card">
+                    <h3><i class="fas fa-file-invoice"></i> Invoice Settings</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="invoicePrefix">Invoice Prefix</label>
+                            <input type="text" id="invoicePrefix" value="INV-" placeholder="e.g., INV-">
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentTerms">Default Payment Terms</label>
+                            <select id="paymentTerms" class="filter-select">
+                                <option value="7">Net 7</option>
+                                <option value="15">Net 15</option>
+                                <option value="30" selected>Net 30</option>
+                                <option value="60">Net 60</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxRate">Default Tax Rate (%)</label>
+                            <input type="number" id="taxRate" value="10" placeholder="e.g., 10">
+                        </div>
+                        <div class="form-group">
+                            <label for="invoiceNotes">Default Invoice Notes</label>
+                            <textarea id="invoiceNotes" rows="3" placeholder="Default notes for invoices">Thank you for your business! Payment is due within 30 days.</textarea>
+                        </div>
+                        <button class="btn btn-primary" id="saveInvoiceSettings">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Modal Title</h2>
+                <button class="modal-close" id="modalClose" aria-label="Close modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
