@@ -453,6 +453,9 @@ function createInvoice() {
     closeModal();
     renderInvoices();
     showToast(`Invoice ${inv.id} created successfully!`);
+
+    // Persist to Supabase
+    dbAddInvoice(inv);
 }
 
 function viewInvoice(id) {
@@ -535,6 +538,16 @@ function saveInvoiceEdit() {
     closeModal();
     renderInvoices();
     showToast(`Invoice ${id} updated successfully!`);
+
+    // Persist to Supabase
+    dbUpdateInvoice(id, {
+        client_id: inv.clientId,
+        client_name: inv.client,
+        amount: inv.amount,
+        status: inv.status,
+        invoice_date: inv.date,
+        due_date: inv.dueDate
+    });
 }
 
 function deleteInvoice(id) {
@@ -550,6 +563,9 @@ function confirmDeleteInvoice(id) {
     closeModal();
     renderInvoices();
     showToast(`Invoice ${id} deleted.`, 'info');
+
+    // Persist to Supabase
+    dbDeleteInvoice(id);
 }
 
 // ===== EXPENSES =====
@@ -647,10 +663,14 @@ function addExpense() {
     if (!desc) { showToast('Please enter a description', 'error'); return; }
     if (!amount || amount <= 0) { showToast('Please enter a valid amount', 'error'); return; }
 
-    state.expenses.unshift({ id: state.nextExpenseId++, date, description: desc, category, amount, method });
+    const newExp = { id: state.nextExpenseId++, date, description: desc, category, amount, method };
+    state.expenses.unshift(newExp);
     closeModal();
     renderExpenses();
     showToast('Expense added successfully!');
+
+    // Persist to Supabase
+    dbAddExpense(newExp);
 }
 
 function editExpense(id) {
@@ -703,6 +723,15 @@ function saveExpenseEdit() {
     closeModal();
     renderExpenses();
     showToast('Expense updated successfully!');
+
+    // Persist to Supabase
+    dbUpdateExpense(id, {
+        description: exp.description,
+        amount: exp.amount,
+        category: exp.category,
+        expense_date: exp.date,
+        payment_method: exp.method
+    });
 }
 
 function deleteExpense(id) {
@@ -715,6 +744,9 @@ function confirmDeleteExpense(id) {
     closeModal();
     renderExpenses();
     showToast('Expense deleted.', 'info');
+
+    // Persist to Supabase
+    dbDeleteExpense(id);
 }
 
 // ===== CLIENTS =====
@@ -799,10 +831,14 @@ function addClient() {
     const colors = ['#6C5CE7', '#00B894', '#0984E3', '#E17055', '#FDCB6E', '#A29BFE', '#FD79A8', '#636E72'];
     const color = colors[state.nextClientId % colors.length];
 
-    state.clients.push({ id: state.nextClientId++, name, email, phone, color, totalRevenue: 0, invoiceCount: 0 });
+    const newClient = { id: state.nextClientId++, name, email, phone, color, totalRevenue: 0, invoiceCount: 0 };
+    state.clients.push(newClient);
     closeModal();
     renderClients();
     showToast(`Client "${name}" added successfully!`);
+
+    // Persist to Supabase
+    dbAddClient(newClient);
 }
 
 function editClient(id) {
@@ -839,6 +875,13 @@ function saveClientEdit() {
     closeModal();
     renderClients();
     showToast('Client updated successfully!');
+
+    // Persist to Supabase
+    dbUpdateClient(id, {
+        name: client.name,
+        email: client.email,
+        phone: client.phone
+    });
 }
 
 function deleteClient(id) {
@@ -852,6 +895,9 @@ function confirmDeleteClient(id) {
     closeModal();
     renderClients();
     showToast('Client deleted.', 'info');
+
+    // Persist to Supabase
+    dbDeleteClient(id);
 }
 
 // ===== REPORTS =====
