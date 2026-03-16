@@ -14,8 +14,8 @@
 
 // ===== SUPABASE CONFIG =====
 // Replace these with your actual Supabase project values
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';      // e.g., https://xyzcompany.supabase.co
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // e.g., eyJhbGciOiJIUzI1NiIs...
+const SUPABASE_URL = 'https://rlnnazacadiytqlfcjfo.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsbm5hemFjYWRpeXRxbGZjamZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzgxNzUsImV4cCI6MjA4OTIxNDE3NX0.mJjeNgmJGwCQC8r8GfUyWew2ok6_yQvfbYhACL9rtO0';
 
 // Initialize Supabase client (loaded via CDN in index.html)
 let supabaseClient = null;
